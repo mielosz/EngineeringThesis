@@ -3,6 +3,7 @@
 \subsection{Środowisko GnuRadio}
 \paragraph*{Diagramy}
 \paragraph*{Bloki}
+\paragraph*{Elementy}
 \subsection{Filtracja próbek rzeczywistych}
 \subsection{Filtracja próbek zespolonych}
 Sygnał zespolony możemy zapisać jako sumę dwóch sygnałów rzeczywistych:
@@ -39,4 +40,34 @@ Jednym z nich jest \texttt{gr\_modtool}, który został wykorzystany do stworzen
 Dzięki temu nasz blok będzie w stanie łączyć się z innymi, przekazywać i odbierać sygnały oraz będzie rozumiał polecenia wydawane przez środowisko, w którym zostanie umieszczony. 
 W projekt włącza się katalog z testami jednostkowymi, sprawdzającymi elementarne funkcjonalności bloku. 
 Dobrze zaimplementowane i przemyślane testy jednostkowe informują o wykrytych błędach powstających podczas tworzenia algorytmu.
-Oprócz testów w projekcie tworzy się plik \texttt{.xml}, który określa reprezentację bloku w środowisku graficznym \texttt{gnuradio-companion} oraz, w zależności od wybranego języka programowania, plik z kodem źródłowym bloku.
+Oprócz testów w projekcie tworzy się plik \texttt{.xml}, który określa reprezentację bloku w środowisku graficznym \texttt{gnuradio-companion}. 
+W zależności od wybranego języka programowania, również plik z kodem źródłowym bloku.
+\subsection{Klasa obiektu bloku}
+\paragraph{}
+Serce modułu odpowiedzialnego za przetwarzanie wejściowych strumieni danych znajduje się w pliku  \texttt{adaptive\_lms\_filter\_cc.py}. W tym miejscu zdefiniowana jest klasa bloku wraz z jej zmiennymi i funkcją.
+
+\paragraph{}
+\begin{tabular}{|l|} \hline
+\texttt{adaptive\_lms\_filter\_cc} \\
+\hline
+\texttt{-input\_items} \\
+\texttt{-output\_items} \\
+\texttt{-weights} \\
+\texttt{-order} \\
+\texttt{-step} \\
+\texttt{-num\_of\_iter} \\
+\hline
+\texttt{+work()} \\
+\texttt{+set\_history()} \\
+\hline
+\end{tabular}
+
+\paragraph{}
+Funkcja \texttt{work} uruchamiana cykliczne przez proces \texttt{scheduler} zawiera instrukcje odpowiedzialne za całe przetwarzanie wewnątrz bloku. 
+Jest miejscem, w którym należy umieścić implementację filtra. 
+Pobiera z wejścia nadchodzące elementy, a na ich postawie oblicza produkty, które kieruje na wyjście.
+
+Należy zauważyć, że w niektórych przypadkach do obliczenia wartości próbki wyjściowej potrzeba więcej niż jedną próbkę wejściową. 
+Jest tak w przypadku filtracji, gdzie filtr o długości $N$ potrzebuje $N-1$ próbek minionych. 
+Konieczne jest stworzenie bufora z którego można będzie pobierać te wartości. 
+Funkcja \texttt{set\_history} tworzy miejsce do przechowywania wcześniejszych próbek w pamięci, a jako parametr przyjmuje długość tego bufora. 
