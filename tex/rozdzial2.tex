@@ -1,1 +1,32 @@
-\chapter{}
+\chapter{Filtr adaptacyjny}
+\section{Implementacja}
+\subsection{Środowisko GnuRadio}
+\subsection{Filtracja próbek rzeczywistych}
+\subsection{Filtracja próbek zespolonych}
+Sygnał zespolony możemy zapisać jako sumę dwóch sygnałów rzeczywistych:
+\begin{equation}
+u(n) = u_I(n) + ju_Q(n)
+\end{equation}
+gdzie $u_I(n)$ oznacza składową rzeczywistą sygnału, a $u_Q(n)$ składową urojoną.
+\section{Blok funkcjonalny}
+\subsection{Założenia}
+\paragraph{}
+Pierwszym założeniem projektowym bloku było zapewnienie interfejsu zgodnego ze schematem filtra. 
+Powinien posiadać dwa wejścia. 
+Dla sygnału zakłóconego i sygnału odniesienia. Wyjścia również dwa. 
+Pierwsze- sygnału odfiltrowanego, drugie- wektora błędu do monitorowania szybkości zbieżności algorytmu.
+
+Kolejny parametr określa liczbę próbek wyjściowych do wejściowych.
+Blok nie będzie zmieniał liczby próbek sygnału wejściowego zatem stosunek $n_{wej}/n_{wyj}$
+powinien wynosić $1:1$. W nomenklaturze środowiska GnuRadio takie przetwarzanie określa się jako synchroniczne.
+
+Typem danych wejściowych jak i wyjściowych będą wartości zespolone próbek.
+Parametrami do ustawienia przez użytkownika w środowisku graficznym będą:
+\begin{enumerate}
+ \item rząd $N$ filtru w postaci liczby całkowitej 
+ \item długość kroku $\mu$ w postaci liczby zmiennoprzecinkowej
+ \item liczba iteracji w postaci liczby całkowitej
+ \item początkowe współczynniki filtra w postaci wektora liczb o długości N 
+ \end{enumerate}
+ 
+Parametry zostaną podzielone na wymagane (1, 2) i opcjonalne (3, 4)
