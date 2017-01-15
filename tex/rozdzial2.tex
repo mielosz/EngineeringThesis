@@ -1,6 +1,8 @@
 \chapter{Filtr adaptacyjny}
 \section{Implementacja}
 \subsection{Środowisko GnuRadio}
+\paragraph*{Diagramy}
+\paragraph*{Bloki}
 \subsection{Filtracja próbek rzeczywistych}
 \subsection{Filtracja próbek zespolonych}
 Sygnał zespolony możemy zapisać jako sumę dwóch sygnałów rzeczywistych:
@@ -30,3 +32,11 @@ Parametrami do ustawienia przez użytkownika w środowisku graficznym będą:
  \end{enumerate}
  
 Parametry zostaną podzielone na wymagane (1, 2) i opcjonalne (3, 4)
+\subsection{Szablon projektu}
+\paragraph{}
+Środowisko GnuRadio dostarcza szereg narzędzi wspomagających pracę w rozwijaniu własnych modułów tak, aby były kompatybilne z istniejącymi. 
+Jednym z nich jest \texttt{gr\_modtool}, który został wykorzystany do stworzenia struktury plików bloku filtra adaptacyjnego. 
+Dzięki temu nasz blok będzie w stanie łączyć się z innymi, przekazywać i odbierać sygnały oraz będzie rozumiał polecenia wydawane przez środowisko, w którym zostanie umieszczony. 
+W projekt włącza się katalog z testami jednostkowymi, sprawdzającymi elementarne funkcjonalności bloku. 
+Dobrze zaimplementowane i przemyślane testy jednostkowe informują o wykrytych błędach powstających podczas tworzenia algorytmu.
+Oprócz testów w projekcie tworzy się plik \texttt{.xml}, który określa reprezentację bloku w środowisku graficznym \texttt{gnuradio-companion} oraz, w zależności od wybranego języka programowania, plik z kodem źródłowym bloku.
