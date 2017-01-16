@@ -69,5 +69,47 @@ Pobiera z wejścia nadchodzące elementy, a na ich postawie oblicza produkty, kt
 
 Należy zauważyć, że w niektórych przypadkach do obliczenia wartości próbki wyjściowej potrzeba więcej niż jedną próbkę wejściową. 
 Jest tak w przypadku filtracji, gdzie filtr o długości $N$ potrzebuje $N-1$ próbek minionych. 
-Konieczne jest stworzenie bufora z którego można będzie pobierać te wartości. 
-Funkcja \texttt{set\_history} tworzy miejsce do przechowywania wcześniejszych próbek w pamięci, a jako parametr przyjmuje długość tego bufora. 
+Konieczne jest stworzenie bufora skąd można będzie pobierać te wartości. 
+Funkcja \texttt{set\_history} tworzy miejsce do przechowywania wcześniejszych próbek w pamięci, a jako parametr przyjmuje długość tego bufora.
+
+\subsection{Inicjalizacja}
+\paragraph{}
+Następuje zawsze po uruchomieniu projektu. 
+W każdym bloku (obiekcie) na diagramie tworzą się instancje do których przypisuje się wartości początkowe.
+Parametry mogą być dostosowywane przez użytkownika na etapie projektowania (w czasie przed uruchomieniem), lub zmieniane w trakcie wykonywania programu.
+Zmiana parametrów w biegu wiąże się z ponowną inicjalizacją bloku i może prowadzić do utraty danych przechowywanych wewnątrz tego obiektu. W środowisku \texttt{gnuradio-companion} okno właściwości pojawia się po podwójnym kliknięciu na blok. Zamiast stałej wartości parametru można przypisać referencję do jednego z dostępnych elementów sterujących np. suwaka lub pokrętła. Dzięki temu dostosowywanie bloku możliwe jest z poziomu graficznego panelu użytkownika.
+
+Projekt pozwala na sterowanie dwoma parametrami podczas pracy filtra:
+\begin{enumerate}
+\item \texttt{order} - rząd $M = \{5,6,...,30\}$
+\item \texttt{step} - krok adaptacji $\mu \in [0.0002, 0.005]$
+\end{enumerate}
+
+\subsection{Implementacja}
+Aby zwiększyć efektywność i wygodę działań algebraicznych na macierzach, zastosowano narzędzia \texttt{numpy} będące rozszerzeniem języka Python.
+
+\begin{algorithmic}
+\Require $w(0) \gets [0, 0,...,0]^{T}$,
+\State buffer $\gets 2 \times n$
+\While {Program running}
+    \Repeat\ buffer $\gets$ \Call{Consume samples}{reference input, noisy signal input} \Until buffer length $<$ filter order
+    \State \Call {Filter}{buffer}
+    \State \Call {Remove From Buffer}{oldest $x, d$}
+\EndWhile
+\Function{Filter}{samples}
+\ForAll {$x, d \gets$ samples}
+    \State $y \gets x \cdot w$
+    \State $e \gets d - y$
+    \State $w \gets  w \cdot step \cdot x \cdot e$
+    \State $y \gets x \cdot w$
+    \State \Return $y, e$
+\EndFor
+\EndFunction
+\Function{Consume samples}{reference input, noisy signal input}
+    \State $x \gets$ reference input
+    \State $d \gets$ noisy signal input
+    \State buffer $\gets x, d$
+    \State \Return buffer
+\EndFunction
+\end{algorithmic}
+
