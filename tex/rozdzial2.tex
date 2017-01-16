@@ -88,9 +88,13 @@ Projekt pozwala na sterowanie dwoma parametrami podczas pracy filtra:
 \subsection{Implementacja}
 Aby zwiększyć efektywność i wygodę działań algebraicznych na macierzach, zastosowano narzędzia \texttt{numpy} będące rozszerzeniem języka Python.
 
+Algorytm pobiera z dwóch wejść próbki sygnałów i zapisuje je do bufora o wymiarze $b = 2 \times M$, którego każdy wiersz to jeden sygnał, a każda kolumna to kolejna próbka tego sygnału. Filtr odczytuje z bufora, wykonuje operacje algebraiczne, adaptacyjnie zmieniając swoje współczynniki. Odfiltrowany sygnał przekierowywany jest na wyście, a z bufora wymazywane są próbki $b_{1M}, b_{2M}$.
+
+
+
 \begin{algorithmic}
-\Require $w(0) \gets [0, 0,...,0]^{T}$,
-\State buffer $\gets 2 \times n$
+\Require $w \gets w_0 \gets [0, 0,...,0]^{T}$,
+\State buffer $\gets 2 \times M$
 \While {Program running}
     \Repeat\ buffer $\gets$ \Call{Consume samples}{reference input, noisy signal input} \Until buffer length $<$ filter order
     \State \Call {Filter}{buffer}
