@@ -1,16 +1,19 @@
-\chapter{Filtr adaptacyjny}
-\section{Implementacja}
+\chapter{System eliminacji zakłóceń}
+\section{Wstęp}
+\paragraph{}
+Realizacja systemu eliminacji zakłóceń w odbiorniku polegała na stworzeniu modułu kompatybilnego z radiem USRP. Modułu, który pobiera sygnał z radia i dokonuje przetwarzania, a wynik tego przekierowuje do demodulatora.
+Przetwarzanie zakłada filtrację adaptacyjną w oparciu o algorytm LMS.
 \subsection{Środowisko GnuRadio}
+Głównym środowiskiem wspierającym radio USRP jest GnuRadio. GnuRadio pozwala na implementacje własnych bloków w oparciu o języki programowania Python lub C++. W jego skład wchodzi narzędzie o nazwie \texttt{gnuradio-companion}, które służy do budowy diagramów z bloków o różnym przeznaczeniu. Czynniki te były kluczowe w podejmowaniu decyzji o doborze narzędzi do realizacji projektu.
 \paragraph*{Diagramy}
+    Diagram nazywany jest również projektem i łączy się z wielu bloków funkcjonalnych.
+    Zawiera przynajmniej jedno źródło i jedno ujście sygnału.
+    Tworzy łańcuch w którego ogniwach zachodzi przetwarzanie sygnału.
+    Nadzoruje poprawność połączeń i zarządza wykonywaniem programu.
 \paragraph*{Bloki}
-\paragraph*{Elementy}
-\subsection{Filtracja próbek rzeczywistych}
-\subsection{Filtracja próbek zespolonych}
-Sygnał zespolony możemy zapisać jako sumę dwóch sygnałów rzeczywistych:
-\begin{equation}
-u(n) = u_I(n) + ju_Q(n)
-\end{equation}
-gdzie $u_I(n)$ oznacza składową rzeczywistą sygnału, a $u_Q(n)$ składową urojoną.
+    Mogą być źródłem sygnału (np. generator), ujściem (np. wyjście audio w PC) lub elementem pośredniczącym (np. filtry) w procesie przetwarzania. 
+    Każdy z bloków określa swój typ danych wejściowych i wyjściowych co ogranicza możliwość połączeń lecz gwarantuje kompatybilność typów.
+
 \section{Blok funkcjonalny}
 \subsection{Założenia}
 \paragraph{}
@@ -58,6 +61,7 @@ Serce modułu odpowiedzialnego za przetwarzanie wejściowych strumieni danych zn
 \texttt{-num\_of\_iter} \\
 \hline
 \texttt{+work()} \\
+\texttt{+consume()} \\
 \texttt{+set\_history()} \\
 \hline
 \end{tabular}
@@ -77,7 +81,14 @@ Funkcja \texttt{set\_history} tworzy miejsce do przechowywania wcześniejszych p
 Następuje zawsze po uruchomieniu projektu. 
 W każdym bloku (obiekcie) na diagramie tworzą się instancje do których przypisuje się wartości początkowe.
 Parametry mogą być dostosowywane przez użytkownika na etapie projektowania (w czasie przed uruchomieniem), lub zmieniane w trakcie wykonywania programu.
-Zmiana parametrów w biegu wiąże się z ponowną inicjalizacją bloku i może prowadzić do utraty danych przechowywanych wewnątrz tego obiektu. W środowisku \texttt{gnuradio-companion} okno właściwości pojawia się po podwójnym kliknięciu na blok. Zamiast stałej wartości parametru można przypisać referencję do jednego z dostępnych elementów sterujących np. suwaka lub pokrętła. Dzięki temu dostosowywanie bloku możliwe jest z poziomu graficznego panelu użytkownika.
+Zmiana parametrów w biegu wiąże się z ponowną inicjalizacją bloku i może prowadzić do utraty danych przechowywanych wewnątrz tego obiektu. W środowisku \texttt{gnuradio-companion} okno właściwości pojawia się po podwójnym kliknięciu na blok. Zamiast stałej wartości parametru można przypisać referencję do jednego z dostępnych elementów sterujących np. suwaka lub pokrętła. Dzięki temu dostosowywanie bloku możliwe jest z poziomu graficznego panelu użytkownika (R).
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=1]{properties.png}
+\caption{Panel parametrów bloku}
+\label{blockproperties}
+\end{figure}
 
 Projekt pozwala na sterowanie dwoma parametrami podczas pracy filtra:
 \begin{enumerate}
@@ -86,15 +97,56 @@ Projekt pozwala na sterowanie dwoma parametrami podczas pracy filtra:
 \end{enumerate}
 
 \subsection{Implementacja}
+\paragraph{}
+Nieodłączną częścią modułu wykorzystywaną przez \texttt{gnuradio-companion} jest plik \texttt{adaptive\_lms\_filter\_cc.xml}, który określa parametry wejściowe bloku, układ doprowadzeń i wyprowadzeń; gwarantuje kompatybilność połączeń z innymi blokami przez definiowanie typów danych dla wszystkich wejść, wyjść i parametrów. 
+Pozwala również ustawić właściwości istotne dla poprawnego kategoryzowania w zasobach bibliotek.
+
+Poniżej fragment struktury pliku \texttt{.xml}:
+
+
+\begin{verbatim}
+
+<?xml version="1.0"?>
+<block>
+  <name>adaptive_lms_filter_cc</name>
+  <key>lms_filter_adaptive_lms_filter_cc</key>
+  <category>[lms_filter]</category>
+  <import>import lms_filter</import>
+  <make>lms_filter.adaptive_lms_filter_cc
+  ($order, $step, $weights $num_of_iter)</make>
+
+  <param>
+    <name>Order</name>
+    <key>order</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Step</name>
+    <key>step</key>
+    <type>float</type>
+  </param>
+
+  <sink>
+    <name>reference</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+\end{verbatim}
+
 Aby zwiększyć efektywność i wygodę działań algebraicznych na macierzach, zastosowano narzędzia \texttt{numpy} będące rozszerzeniem języka Python.
 
-Algorytm pobiera z dwóch wejść próbki sygnałów i zapisuje je do bufora o wymiarze $b = 2 \times M$, którego każdy wiersz to jeden sygnał, a każda kolumna to kolejna próbka tego sygnału. Filtr odczytuje z bufora, wykonuje operacje algebraiczne, adaptacyjnie zmieniając swoje współczynniki. Odfiltrowany sygnał przekierowywany jest na wyście, a z bufora wymazywane są próbki $b_{1M}, b_{2M}$.
-
-
-
+Algorytm pobiera z dwóch wejść próbki sygnałów i zapisuje je do bufora o wymiarze $b = 2 \times M$, którego każdy wiersz to jeden sygnał, a każda kolumna to kolejna próbka tego sygnału. 
+Filtr odczytuje z bufora, wykonuje operacje algebraiczne, adaptacyjnie zmieniając swoje współczynniki. 
+Odfiltrowany sygnał przekierowywany jest na wyście, a z bufora wymazywane są próbki $b_{1M}, b_{2M}$.
+\begin{samepage}
 \begin{algorithmic}
 \Require $w \gets w_0 \gets [0, 0,...,0]^{T}$,
-\State buffer $\gets 2 \times M$
+\State buffer $\gets $ \Call{Set History}{$2 \times M$}
 \While {Program running}
     \Repeat\ buffer $\gets$ \Call{Consume samples}{reference input, noisy signal input} \Until buffer length $<$ filter order
     \State \Call {Filter}{buffer}
@@ -116,4 +168,19 @@ Algorytm pobiera z dwóch wejść próbki sygnałów i zapisuje je do bufora o w
     \State \Return buffer
 \EndFunction
 \end{algorithmic}
+\end{samepage}
 
+
+\subsection{Instalacja}
+
+Kiedy wszystkie wymagane funkcjonalności zapisane w kodzie pomyślnie przechodzą etap testowania, implementację uznaje się za zakończoną.
+Moduł należy dołączyć do bibliotek GnuRadio, aby jego graficzna reprezentacja znalazła się w środowisku \texttt{gnuradio-companion}, a sam blok mógł zostać wykorzystany jako element w systemie odbiornika.
+
+Proces instalacji nadzoruje narzędzie \texttt{cmake}, które wykonuje instrukcje z pliku \texttt{Makefile} powstałego podczas tworzenia szablonu projektu. Gotowy blok przedstawia Rysunek \ref{grcblock}. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.3]{block.png}
+\caption{Reprezentacja graficzna bloku w \texttt{gnuradio-companion}}
+\label{grcblock}
+\end{figure}
