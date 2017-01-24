@@ -15,14 +15,6 @@
 \pagenumbering{roman}
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
 
-
-\newenvironment{absolutelynopagebreak}
-  {\par\nobreak\vfil\penalty0\vfilneg
-   \vtop\bgroup}
-  {\par\xdef\tpd{\the\prevdepth}\egroup
-   \prevdepth=\tpd}
-
-
 \begin{document}
 \newcounter{rom}
  

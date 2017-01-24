@@ -41,8 +41,59 @@ Pytania na które należało odpowiedzieć
 \item Czy obsługiwany będzie tryb MIMO?
 \end{enumerate}
 
-\paragraph{Pasmo} 
-\paragraph{Interfejs}
+\paragraph{Pasmo}
+Istnieją trzy typy pasma:
+\begin{enumerate}
+\item analogowe - to szerokość użytecznego (3dB) pasma pomiędzy wejściem w.cz., a interfejsem radiowym częstotliwości pośredniej lub podstawowej. Zazwyczaj ograniczany przez filtry pasmowe na płycie rozszerzeń.
+\item przetwarzania układu FPGA- to częstotliwość próbkowania przetworników ADC na płycie bazowej. Jest to maksymalna hipotetyczna szerokość pasma dla USRP.
+\item hosta - Interfejs do wymiany strumieni danych pomiedzy USRP a hostem również posiada swoje ograniczenia. Przepustowość zależy od rodzaju transmisji (simplex lub duplex) oraz liczby bitów przypadającej na jedną próbkę (8 lub 16 bitów). 
+\end{enumerate}
+
+Za pasmo całego systemu przyjmuje się najwęższe z wymienionych powyżej. \cite{usrp_bw}
+ 
+\paragraph{Interfejs} Dane pomiędzy radiem a hostem można przesyłać przez jeden spośród kilku interfejsów do wyboru. Najbardziej popularne to:
+
+\begin{enumerate}
+\item USB 3.0 - posiada przepustowość ok. 61.44 MS/s.
+Ze względu na to, że USB wykorzystuje wspólną linię do nadawania i odbierania danych zezwala jedynie na połączenie half duplex.
+\item Gigabit Ethernet - przepustowość 25 MS/s w trybie full duplex. Dodatkową zaletą jest możliwość włączenia urządzenia do sieci i komunikowania się na dużą odległość.
+\end{enumerate}
+
+\begin{table}[t]
+\caption{Zestawienie parametrów USRP współpracujących z PC}
+\label{usrp_table}
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+Model & Interfejs & Host BW (MS/s) & ADC (MS/s) & MIMO \\
+\hline
+N210 & GigE & 50@16b 100@8b  & 100 & Tak \\
+\hline
+N200 & GigE & 50@16b 100@8b  & 100 & Tak \\
+\hline
+B210 & USB 3.0 & 61.44 & 61.44 & Tak \\
+\hline
+B210 & USB 3.0 & 61.44 & 61.44 & Nie \\
+\hline
+\end{tabular}
+\end{table}
+
+
+Odpowiadając na pytania 1 i 2: Większość popularnych naziemnych systemów telekomunikacyjnych pracuje w paśmie do 5 GHz, zatem nie ma potrzeby przekraczania tej częstotliwości. Górną granicę szerokości kanału dla pojedynczej technologii stanowi WiFi z maksymalną szerokością 40 MHz. \cite{802.11}
+
+Odnosząc się do pytania 3. - Ze względu na łatwość prototypowania i dostępność komputera PC, radio będzie współpracowało z komputerem stacjonarnym. Komunikacja full duplex nie jest konieczna, co jest odpowiedzią na pyt. 4., lecz mobilność komputera jest ograniczona na tyle, że konieczne będzie zarządzanie zdalne poprzez interfejs Gigabit Ethernet. Projekt nie przewiduje również pracy w trybie MIMO (pyt. 5)
+
+Tabela \ref{usrp_table} przedstawia krytyczne z punktu widzenia projektu parametry radia. Jeżeli ograniczymy wybór do urządzenia z interfejsem GigE, pozostanie rozstrzygnąć pomiędzy modelem N210 a N200. Różnią się one jedynie ilością bramek w układzie FPGA, których to N210 ma więcej. Wykonanie projektu nie przewiduje przeprogramowania tego układu, zatem rozszerzanie FPGA nie jest konieczne. Wybrany został model N200 (Rysunek \ref{n200}).
+
+\begin{figure}[t]
+\includegraphics[scale=1]{ch_4n200}
+\centering
+\caption[Model USRP N200 w obudowie.; Źródło: \textit{https://www.ettus.com/product/details/UN200-KIT}]{\tabular[t]{@{}l@{}}Model USRP N200 w obudowie. \\ Źródło: \textit{https://www.ettus.com/product/details/UN200-KIT}\endtabular}
+\label{n200}
+\end{figure}
+
+
+
 
 
 
