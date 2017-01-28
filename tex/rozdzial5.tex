@@ -35,7 +35,7 @@ Na Wykresie \ref{fig:sine1} przedstawiono efekt filtracji sygnału.
 Zakłócenie  zostało pomyślnie odfiltrowane.
 Moc w paśmie użytecznym została wyrównana.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=0.27]{sine1}
 \caption{Filtracja zakłóceń o częstotliwości 2kHz}
@@ -47,7 +47,7 @@ Kiedy częstotliwość zakłócenia osiągnęła wartość wykraczającą poza p
 Moc sinusoidy o częstotliwości 3kHz została stłumiona względem niefiltrowanego sygnału o ok. 20dB.
 Świadczy to o tym, że algorytm podąża za zmianami sygnału interferującego.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=0.27]{sine2}
 \caption{Filtracja zakłóceń o częstotliwości 3kHz}
@@ -63,14 +63,14 @@ Dla każdej z wartości kroku obliczono wartość bezwzględną błędu estymacj
 Im większy jest parametr kroku $\mu$, tym szybsze są możliwości śledzenia przez filtr adaptacyjny (Rysunek \ref{fig:sine4}). Duży parametr kroku $\mu$ może sprowadzać niakceptowalnie duży błąd średniokwadratowy. \cite{Haykin:1998:ST} 
 Przykładem tego są wyraźnie obserwowalne na rys. \ref{fig:sine3} zaniki w widmie, na częstotliwości odpowiadającej cz. sygnału zakłócającego.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=0.27]{sine3}
 \caption{Wpływ parametru kroku na widmo sygnału.}
 \label{fig:sine3}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=0.27]{konwergencja}
 \caption{Wpływ parametru kroku na szybkość zbieżności algorytmu.}
@@ -102,7 +102,7 @@ Wartość amplitudy szumu jest jednym z parametrów bloku \texttt{Channel Model}
 Celem było przesłanie pliku graficznego ze źródła do ujścia z wykorzystaniem modulacji QPSK i modelu kanału radiowego.
 
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \caption{Konfiguracja bez korektora}
 \label{tab:noeq}
@@ -120,7 +120,7 @@ Skutkuje to rozmyciem się konstelacji i błędnym rozpoznawaniem symboli w deko
 Efektem tego jest zniekształcony obraz na wyjściu. 
 
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \caption{Konfiguracja z korektorem}
 \label{tab:eq}
@@ -149,7 +149,7 @@ Wykres konstelacji informuje o wielkości zniekształceń sygnału, które dla k
 Algorytm LMS efektywnie eliminuje zakłócenia związane z degradacją sygnału w kanale radiowym.
 
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \caption{Korekcja kanału}
 \label{channel_eq}
