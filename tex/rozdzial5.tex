@@ -1,7 +1,5 @@
 \chapter{Testy Funkcjonalne}
-\section{Wstęp}
-\section{Eliminacja zakłóceń sinusoidalnych}
-\subsection{Integracja bloku filtra w projekcie}
+\section{Integracja bloku filtra w projekcie}
 
 W celu sprawdzenia integralności wykonanego bloku, zestawiono układ jak na Rysunku \ref{fig:itest}.
 Test integracyjny ma wykazać czy występuje zgodność typów danych we/wyj oraz zgodność panelu konfiguracyjnego użytkownika.
@@ -16,6 +14,7 @@ Panel parametrów wyświetla się prawidłowo i wymaga od użytkownika podania k
 \label{fig:itest}
 \end{figure}
 
+\section{Eliminacja zakłóceń sinusoidalnych}
 
 \begin{figure}[ht]
 \centering
@@ -26,14 +25,15 @@ Panel parametrów wyświetla się prawidłowo i wymaga od użytkownika podania k
 \subsection{Weryfikacja poprawności działania}
 
 \paragraph{Test 1.}
-Wygenerowano szum pasmowy (od $2kHz$ do $3kHz$), który imituje sygnał danych.
+Wygenerowano 1kHz szum pasmowy, który imituje sygnał danych.
 Sygnał został zsumowany z falą zakłócającą o częstotliwości $2kHz$.
-Suma została podana na wejście główne filtra, a do wejścia odniesienia podłączono źródło sygnału sinusoidalnego o tej samej częstotliwości, lecz innej fazie.
+Suma została podana na wejście główne filtra, a do wejścia odniesienia podłączono źródło sygnału sinusoidalnego o tej samej częstotliwości co składowa zakłócająca, lecz innej fazie.
 Częstotliwość sinusoid zwiększano stopniowo.
 
-\paragraph{Obserwacja}
+\paragraph{Obserwacja 1.}
 Na Wykresie \ref{fig:sine1} przedstawiono efekt filtracji sygnału.
-Zakłócenie zostało pomyślnie odfiltrowane.
+Zakłócenie  zostało pomyślnie odfiltrowane.
+Moc w paśmie użytecznym została wyrównana.
 
 \begin{figure}[h]
 \centering
@@ -42,6 +42,11 @@ Zakłócenie zostało pomyślnie odfiltrowane.
 \label{fig:sine1}
 \end{figure}
 
+\paragraph{Obserwacja 2.}
+Kiedy częstotliwość zakłócenia osiągnęła wartość wykraczającą poza pasmo użyteczne sygnału, zakłócenie znacznie wyróżniało się na wykresie widma. (Rysunek \ref{fig:sine2})
+Moc sinusoidy o częstotliwości 3kHz została stłumiona względem niefiltrowanego sygnału o ok. 20dB.
+Świadczy to o tym, że algorytm podąża za zmianami sygnału interferującego.
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.27]{sine2}
@@ -49,6 +54,12 @@ Zakłócenie zostało pomyślnie odfiltrowane.
 \label{fig:sine2}
 \end{figure}
 
+\paragraph{Test 2.}
+Podobnie jak w teście 1. wykorzystano szum pasmowy i sinusoidalny sygnał zakłócający.
+Zmieniając wartość kroku adaptacji filtra zbadano jego wpływ na kształt widma.
+Dla każdej z wartości kroku obliczono wartość bezwzględną błędu estymacji.
+
+\paragraph{Obserwacja 3.}
 Im większy jest parametr kroku $\mu$, tym szybsze są możliwości śledzenia przez filtr adaptacyjny (Rysunek \ref{fig:sine4}). Duży parametr kroku $\mu$ może sprowadzać niakceptowalnie duży błąd średniokwadratowy. \cite{Haykin:1998:ST} 
 Przykładem tego są wyraźnie obserwowalne na rys. \ref{fig:sine3} zaniki w widmie, na częstotliwości odpowiadającej cz. sygnału zakłócającego.
 
@@ -68,10 +79,14 @@ Przykładem tego są wyraźnie obserwowalne na rys. \ref{fig:sine3} zaniki w wid
 
 \section{Korekcja adaptacyjna}
 
+Przedstawione w Tabeli \ref{eqnoeq} schematy konfiguracji odbiornika zostały stworzone do testów.
+Jedna z korektorem na bazie algorytmu LMS, druga bez korektora w celu porównania wydajności modułu \texttt{LMS DD Equalizer}. 
+Skrót \texttt{DD} pochodzi od ang. \textit{Decision Directed}, co oznacza że punktem odniesienia dla algorytmu jest obiekt konstelacji zawierający mapę symboli sygnału. \cite{dd_lms_eq}
+
 \begin{sidewaystable}[t]
 \centering
-\caption{My caption3}
-\label{my-label3}
+\caption{Diagramy konfiguracji odbiornika}
+\label{eqnoeq}
 \begin{tabular}{l}
 \hline
 Transmisja bez korekcji \\
@@ -81,10 +96,16 @@ Transmisja z korekcją   \\
 \end{tabular}
 \end{sidewaystable}
 
-\begin{table}
+\paragraph{Test 1.}
+Zbadana została skuteczność eliminacji zakłóceń w postaci addytywnego białego szumu.
+Wartość amplitudy szumu jest jednym z parametrów bloku \texttt{Channel Model}.
+Celem było przesłanie pliku graficznego ze źródła do ujścia z wykorzystaniem modulacji QPSK i modelu kanału radiowego.
+
+
+\begin{table}[h]
 \centering
-\caption{My caption}
-\label{my-label2}
+\caption{Konfiguracja bez korektora}
+\label{tab:noeq}
 \begin{tabular}{|l|l|l|}
 \hline
 0mV      & 150mV    & 200mV    \\
@@ -93,11 +114,16 @@ Transmisja z korekcją   \\
 \end{tabular}
 \end{table}
 
+\paragraph{Obserwacja 1.}
+Na podstawie wyników zawartych w Tabeli \ref{tab:noeq} stwierdzono, że im większy poziom szumu addytywnego w kanale, tym gorszy stosunek S/N. 
+Skutkuje to rozmyciem się konstelacji i błędnym rozpoznawaniem symboli w dekoderze.
+Efektem tego jest zniekształcony obraz na wyjściu. 
 
-\begin{table}
+
+\begin{table}[h]
 \centering
-\caption{My caption}
-\label{my-label}
+\caption{Konfiguracja z korektorem}
+\label{tab:eq}
 \begin{tabular}{|l|l|l|}
 \hline
 0mV      & 200mV    & 250mV    \\
@@ -106,7 +132,24 @@ Transmisja z korekcją   \\
 \end{tabular}
 \end{table}
 
-\begin{table}[]
+\paragraph{Obserwacja 2.}
+Tabela \ref{tab:eq} zawiera wyniki próby z korekcją szumu.
+Korektor wpływa na wykres konstelacji, lepiej separując symbole przy tym samym poziomie szumu.
+Dekoder z korektorem przestaje poprawnie interpretować dane przy poziomie szumu powyżej $250mV$.
+
+\paragraph{Test 3.}
+Zbadano jakość korekcji modelu kanału przez blok \texttt{LMS DD Equalizer}.
+W tabeli \ref{channel_eq} umieszczono wykresy charakterystyk kanału dla przypadku z korekcją i bez.
+Model kanału jest filtrem o pewnej odpowiedzi impulsowej.
+Zadaniem korektora jest zniwelowanie efektów kanału oddziałujących na sygnał.
+Wykres charakterystyki powstał poprzez wpuszczenie białego szumu na wejście kanału i obliczenie dyskretnej transformaty Fouriera z jego wyjścia.
+
+\paragraph{Obserwacja 1.}
+Wykres konstelacji informuje o wielkości zniekształceń sygnału, które dla kanału bez korekcji są znacznie większe niż dla kanału z korekcją.
+Algorytm LMS efektywnie eliminuje zakłócenia związane z degradacją sygnału w kanale radiowym.
+
+
+\begin{table}[h]
 \centering
 \caption{Korekcja kanału}
 \label{channel_eq}
