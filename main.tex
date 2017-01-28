@@ -1,4 +1,5 @@
 \documentclass[12pt,twoside]{report}
+\usepackage{pdfpages}
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
 \usepackage[Sonny]{fncychap}
@@ -20,7 +21,7 @@
 \begin{document}
 \newcounter{rom}
  
-\input{tex/title}\newpage\thispagestyle{plain}
+\includepdf{strona_tyt.pdf}\newpage\thispagestyle{plain}
  
 \addtocounter{rom}{1}\setcounter{page}{2}~
 \newpage\thispagestyle{plain}\setcounter{page}{3}
