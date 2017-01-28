@@ -1,5 +1,5 @@
 \chapter{Modelowanie warunków propagacji}
-\section{Wstęp}
+\section{Motywacja}
 Kiedy proces implementacji osiąga pewien stopień zaawansowania nadchodzi czas testowania. 
 Oznacza to sprawdzenie projektu pod kątem dostępnych funkcjonalności. 
 Prototyp poddany zostaje testom, aby upewnić się czy nie posiada poważnych wad. 
@@ -13,7 +13,7 @@ Założenia projektowe nie określają jasno wymogów jakościowych i wydajnośc
 Jako pierwsza przetestowana zostanie zdolność odbiornika do eliminacji zakłóceń pojedynczej częstotliwości. 
 Scenariusz pokazany na Rysunku \ref{cwmodel} zakłada, że w kanale transmisyjnym sygnał użyteczny silnie interferuje z falą sinusoidalną. 
 Dodatkowo występuje nieznaczny dryft częstotliwości sygnału zakłócającego w czasie.
-Druga próba to modelowanie kanału jako filtra liniowego o zmiennej w czasie odpowiedzi impulsowej (Rysunek \ref{mpathmodel}). 
+Druga próba to modelowanie kanału jako filtra liniowego o zmiennej w czasie odpowiedzi impulsowej. (Rysunek \ref{mpathmodel})
 Pozwoli to na przetestowanie odbiornika w warunkach zakłóceń związancych z propagacją wielodrogową \cite{indoor_ch_model}.
 
 \begin{figure}[ht]
@@ -33,7 +33,7 @@ Pozwoli to na przetestowanie odbiornika w warunkach zakłóceń związancych z p
 \subsection{Sygnał sinusoidalny}
 Źródłem zakłóceń w postaci sygnałów sinusoidalnych mogą być radary dużych mocy, których częstotliwości harmoniczne zachodzą na pasmo użyteczne innych systemów \cite{Haykin:2004:MWC:984217}.
 Głównym powodem testowania działania odbiornika dla tego rodzaju zakłóceń jest popularna aplikacja, w której algorytm LMS jest w stanie śledzić pulsację wolnozmiennego sygnału i adaptacyjnie dostosowywać nastawy filtra \cite{Haykin:1996:AFT:230061}.
-Źródłem sygnału będzie blok \texttt{Signal Source}, który jako parametr przyjmuję amplitudę i częstotliwość fali. 
+Źródłem sygnału będzie blok \texttt{Signal Source}, który jako parametr przyjmuję amplitudę i~częstotliwość fali. 
 
 \subsection{Zjawisko wielodrogowości}
 Występuje wtedy, gdy sygnał z nadajnika, odbity od elementów otoczenia, dociera do odbiornika więcej niż jedną drogą. 

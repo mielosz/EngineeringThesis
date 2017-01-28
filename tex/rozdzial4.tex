@@ -1,6 +1,6 @@
 \chapter{Architektura odbiornika}
 
-\section{Wstęp}
+\section{Założenia}
 Wszechstronność systemu była jednym z wymogów projektowych architektury odbiornika. 
 Dostosowanie do różnych rodzajów modulacji, pasm częstotliwości i mocy odbieranego sygnału nie powinno powodować zmian w konfiguracji sprzętowej.
 Jednostką zarządzającą działaniem odbiornika będzie komputer PC.
@@ -8,7 +8,7 @@ Również na nim miejsce będzie miała eliminacja zakłóceń, zatem moduł rad
 
 \section{Radio definiowane programowo}
 Odpowiedzią na stawiane wymagania jest Radio Definiowane Programowo, w skrócie SDR od ang. \textit{Software Defined Radio}.
-Dzięki zastosowaniu cyfrowych mieszaczy i filtrów urządzenie może zostać przeprogramowane do celów, których nikt nie przewidział na etapie projektowania systemu telekomunikacyjnego.
+Dzięki zastosowaniu cyfrowych mieszaczy i~filtrów, urządzenie może zostać przeprogramowane do celów, których nikt nie przewidział na etapie projektowania systemu telekomunikacyjnego.
 Stanowi pewne zabezpieczenie na wypadek zmiany koncepcji lub pojawienia się nowego standardu, ponieważ nie wymaga ingerencji w infastrukturę sprzętową, której modernizacja może przewyższać koszt SDR.
 Radio programowalne pozwala na szybkie prototypowanie przy użyciu środowisk dostępnych na różnych systemach operacyjnych. 
 Programy takie jak Matlab, Simulink, LabView lub wykorzystywany w tym projeckie GnuRadio, oferują łatwość użytkowania bez specjalistycznej wiedzy z zakresu archiektury procesorów sygnałowych. \cite{ImplementingSDR:92304} 

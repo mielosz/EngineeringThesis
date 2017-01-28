@@ -1,18 +1,18 @@
 \chapter{System eliminacji zakłóceń}
-\section{Wstęp}
+\section{Środowisko}
 \paragraph{}
 Realizacja systemu eliminacji zakłóceń w odbiorniku polegała na stworzeniu elementu kompatybilnego z radiem USRP. Modułu, który pobiera sygnał z radia i dokonuje przetwarzania, a wynik tego przekierowuje do demodulatora.
 Przetwarzanie zakłada filtrację adaptacyjną w oparciu o algorytm LMS.
-\subsection{Środowisko GnuRadio}
-Głównym środowiskiem wspierającym radio USRP jest GnuRadio. GnuRadio pozwala na implementacje własnych bloków w oparciu o języki programowania Python i C++. W jego skład wchodzi narzędzie o nazwie \texttt{gnuradio-companion}, które służy do budowy diagramów z bloków o różnym przeznaczeniu. Czynniki te były kluczowe w podjęciu decyzji o doborze tego narzędzia do realizacji projektu.
+\subsection{GnuRadio}
+Głównym środowiskiem wspierającym radio USRP jest GnuRadio \cite{gnuradio}. GnuRadio pozwala na implementacje własnych bloków w oparciu o języki programowania Python i C++. W jego skład wchodzi narzędzie o nazwie \texttt{gnuradio-companion}, które służy do budowy diagramów z bloków o różnym przeznaczeniu. Czynniki te były kluczowe w podjęciu decyzji o wyborze GnuRadio jako narzędzia do realizacji projektu.
 \paragraph*{Diagramy}
     Diagram nazywany jest również projektem i łączy się z wielu bloków funkcjonalnych.
     Zawiera przynajmniej jedno źródło i jedno ujście sygnału.
     Tworzy łańcuch w którego ogniwach zachodzi przetwarzanie sygnału.
     Nadzoruje poprawność połączeń i zarządza wykonywaniem programu.
 \paragraph*{Bloki}
-    Mogą być źródłem sygnału (np. generator), ujściem (np. wyjście audio w PC) lub elementem pośredniczącym (np. filtry) w procesie przetwarzania. 
-    Każdy z bloków określa swój typ danych wejściowych i wyjściowych, co ogranicza możliwość połączeń, lecz gwarantuje kompatybilność typów.
+    Mogą być źródłem sygnału (np. generator), ujściem (np. wyjście audio w~PC) lub elementem pośredniczącym (np. filtry) w procesie przetwarzania. 
+Każdy z~bloków określa swój typ danych wejściowych i wyjściowych, co ogranicza możliwość połączeń, lecz gwarantuje kompatybilność typów.
 
 \section{Blok funkcjonalny}
 \subsection{Założenia}
@@ -39,11 +39,11 @@ Parametry zostaną podzielone na wymagane (1, 2) i opcjonalne (3, 4)
 \paragraph{}
 Środowisko GnuRadio dostarcza szereg narzędzi wspomagających pracę w rozwijaniu własnych modułów tak, aby były kompatybilne z już istniejącymi. 
 Jednym z nich jest \texttt{gr\_modtool}, który został wykorzystany do stworzenia struktury plików bloku filtra adaptacyjnego. 
-Dzięki temu nasz blok będzie w stanie łączyć się z innymi, przekazywać i odbierać sygnały oraz będzie rozumiał polecenia wydawane przez środowisko w którym zostanie umieszczony. 
+Dzięki temu blok będzie w stanie łączyć się z innymi, przekazywać i odbierać sygnały oraz będzie rozumiał polecenia wydawane przez środowisko w~którym zostanie umieszczony. 
 W projekt włącza się katalog z testami jednostkowymi, sprawdzającymi elementarne funkcjonalności bloku. 
 Dobrze zaimplementowane i przemyślane testy jednostkowe informują o wykrytych błędach powstających podczas tworzenia algorytmu.
 Oprócz testów w projekcie tworzy się plik \texttt{.xml}, który określa reprezentację bloku w środowisku graficznym \texttt{gnuradio-companion}. 
-W zależności od wybranego języka programowania, również plik z kodem źródłowym bloku.
+W~zależności od wybranego języka programowania, również plik z kodem źródłowym bloku.
 \subsection{Klasa obiektu bloku}
 \paragraph{}
 Serce modułu odpowiedzialnego za przetwarzanie wejściowych strumieni danych znajduje się w pliku  \texttt{adaptive\_lms\_filter\_cc.py}. W tym miejscu zdefiniowana jest klasa bloku wraz z jej zmiennymi i funkcjami.
@@ -82,7 +82,7 @@ W każdym bloku (obiekcie) na diagramie tworzą się instancje do których przyp
 Parametry mogą być dostosowywane przez użytkownika na etapie projektowania (w czasie przed uruchomieniem), lub zmieniane w trakcie wykonywania programu.
 Zmiana parametrów w biegu wiąże się z ponowną inicjalizacją bloku i może prowadzić do utraty danych przechowywanych wewnątrz tego obiektu. 
 W środowisku \texttt{gnuradio-companion} okno właściwości pojawia się po podwójnym kliknięciu na blok. 
-Zamiast stałej wartości parametru można przypisać referencję do jednego z dostępnych elementów sterujących np. suwaka lub pokrętła. 
+Zamiast stałej wartości parametru można przypisać referencję do jednego z~dostępnych elementów sterujących np. suwaka lub pokrętła. 
 Dzięki temu dostosowywanie bloku możliwe jest z poziomu graficznego panelu użytkownika (R).
 
 \begin{figure}[t]

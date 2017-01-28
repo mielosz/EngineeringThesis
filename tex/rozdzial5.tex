@@ -3,7 +3,7 @@
 
 W celu sprawdzenia integralności wykonanego bloku, zestawiono układ jak na Rysunku \ref{fig:itest}.
 Test integracyjny ma wykazać czy występuje zgodność typów danych we/wyj oraz zgodność panelu konfiguracyjnego użytkownika.
-Jeżeli nastąpi próba łączenia niekompatybilnych ze sobą bloków, wyświetli się błąd podobny do tego z Rysunku \ref{fig:error}.
+Jeżeli nastąpi próba łączenia niekompatybilnych ze sobą bloków, wyświetli się błąd podobny do tego z~Rysunku \ref{fig:error}.
 Po podłączeniu bloków, środowisko nie zgłasza alarmów co oznacza, że filtr może przyjmować dane ze źródła USRP. 
 Panel parametrów wyświetla się prawidłowo i wymaga od użytkownika podania kluczowych parametrów.
   
@@ -81,7 +81,7 @@ Przykładem tego są wyraźnie obserwowalne na rys. \ref{fig:sine3} zaniki w wid
 
 Przedstawione w Tabeli \ref{eqnoeq} schematy konfiguracji odbiornika zostały stworzone do testów.
 Jedna z korektorem na bazie algorytmu LMS, druga bez korektora w celu porównania wydajności modułu \texttt{LMS DD Equalizer}. 
-Skrót \texttt{DD} pochodzi od ang. \textit{Decision Directed}, co oznacza że punktem odniesienia dla algorytmu jest obiekt konstelacji zawierający mapę symboli sygnału. \cite{dd_lms_eq}
+Skrót \texttt{DD} pochodzi od ang. \textit{Decision Directed} co oznacza, że punktem odniesienia dla algorytmu jest obiekt konstelacji zawierający mapę symboli sygnału. \cite{dd_lms_eq}
 
 \begin{sidewaystable}[t]
 \centering
@@ -139,7 +139,7 @@ Dekoder z korektorem przestaje poprawnie interpretować dane przy poziomie szumu
 
 \paragraph{Test 3.}
 Zbadano jakość korekcji modelu kanału przez blok \texttt{LMS DD Equalizer}.
-W tabeli \ref{channel_eq} umieszczono wykresy charakterystyk kanału dla przypadku z korekcją i bez.
+W~tabeli \ref{channel_eq} umieszczono wykresy charakterystyk kanału dla przypadku z korekcją i~bez.
 Model kanału jest filtrem o pewnej odpowiedzi impulsowej.
 Zadaniem korektora jest zniwelowanie efektów kanału oddziałujących na sygnał.
 Wykres charakterystyki powstał poprzez wpuszczenie białego szumu na wejście kanału i obliczenie dyskretnej transformaty Fouriera z jego wyjścia.
