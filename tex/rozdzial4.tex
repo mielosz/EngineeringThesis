@@ -9,9 +9,9 @@ Również na nim miejsce będzie miała eliminacja zakłóceń, zatem moduł rad
 \section{Radio definiowane programowo}
 Odpowiedzią na stawiane wymagania jest Radio Definiowane Programowo, w skrócie SDR od ang. \textit{Software Defined Radio}.
 Dzięki zastosowaniu cyfrowych mieszaczy i~filtrów, urządzenie może zostać przeprogramowane do celów, których nikt nie przewidział na etapie projektowania systemu telekomunikacyjnego.
-Stanowi pewne zabezpieczenie na wypadek zmiany koncepcji lub pojawienia się nowego standardu, ponieważ nie wymaga ingerencji w infastrukturę sprzętową, której modernizacja może przewyższać koszt SDR.
+Stanowi pewne zabezpieczenie na wypadek zmiany koncepcji lub pojawienia się nowego standardu, ponieważ nie wymaga ingerencji w infrastrukturę sprzętową, której modernizacja może przewyższać koszt SDR.
 Radio programowalne pozwala na szybkie prototypowanie przy użyciu środowisk dostępnych na różnych systemach operacyjnych. 
-Programy takie jak Matlab, Simulink, LabView lub wykorzystywany w tym projeckie GnuRadio, oferują łatwość użytkowania bez specjalistycznej wiedzy z zakresu archiektury procesorów sygnałowych. \cite{ImplementingSDR:92304} 
+Programy takie jak Matlab, Simulink, LabView lub wykorzystywany w tym projeckie GnuRadio, przenoszą funkcjonalności procesorów sygnałowych do systemu operacyjnego, ułatwiając pracę osobom bez doświadczenia w zakresie architektury DSP.~\cite{ImplementingSDR:92304} 
 
 \section{USRP}
 \subsection{Architektura}
@@ -20,7 +20,7 @@ Widmo sygnałów w.cz. przeniesione zostaje do pasma podstawowego (BB) lub pośr
 Wtedy następuje konwersja analogowo- cyfrowa. 
 USRP posiada po dwa przetworniki ADC na każdej lini TX/RX.
 Układ FPGA realizuje funkcję konwertera DDC (ang. \textit{Digital Down Converter}), który ogranicza liczbę próbek wyprodukowanych przez ADC, zachowując informację niesioną przez sygnał.
-Mniejsza przepływność bitowa pozwala na efektywne przesyłanie danych z USRP do komputera w celu dalszego przetwarzania. \cite{usrp_bw}
+Mniejsza przepływność bitowa pozwala na efektywne przesyłanie danych z USRP na interfejs wej/wyj komputera-hosta. \cite{usrp_bw}
 
 \begin{figure}
 \centering
@@ -79,7 +79,7 @@ B210 & USB 3.0 & 61.44 & 61.44 & Nie \\
 \end{table}
 
 
-Odpowiadając na pytania 1 i 2: Większość popularnych naziemnych systemów telekomunikacyjnych pracuje w paśmie do 5 GHz, zatem nie ma potrzeby przekraczania tej częstotliwości. Górną granicę szerokości kanału dla pojedynczej technologii stanowi WiFi z maksymalną szerokością 40 MHz. \cite{802.11}
+Odpowiadając na pytania 1 i 2: Większość popularnych naziemnych systemów telekomunikacyjnych pracuje w paśmie do 5 GHz, zatem nie ma potrzeby przekraczania tej częstotliwości. Górną granicę szerokości kanału dla pojedynczej technologii stanowi WiFi z pasmem 40 MHz. \cite{802.11}
 
 Odnosząc się do pytania 3. - Ze względu na łatwość prototypowania i dostępność komputera PC, radio będzie współpracowało z komputerem stacjonarnym. Komunikacja full duplex nie jest konieczna, co jest odpowiedzią na pyt. 4., lecz mobilność komputera jest ograniczona na tyle, że konieczne będzie zarządzanie zdalne poprzez interfejs Gigabit Ethernet. Projekt nie przewiduje również pracy w trybie MIMO (pyt. 5)
 

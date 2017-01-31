@@ -8,8 +8,8 @@ Algorytm najmniejszych kwadratów (LMS od ang. \textit{Least Mean Squares}) dzia
 Na rys. \ref{lms_filter} przedstawiono przepływ sygnałów w strukturze filtra. 
 Dla danego ciągu wejściowego $x(n)$ filtr produkuje sygnał wyjściowy $\hat{y}(n)$, który jest porównywany do sygnału pożądanego $d(n)$. 
 Błąd estymacji $e(n)$ jest różnicą pomiędzy sygnałem pożądanym a jego estymacją $\hat{y}(n)$. 
-Sygnał błędu zamyka pętlę sprzężenia zwrotnego. \cite{Haykin:1996:AFT:230061} 
-Adaptacja może zostać osiągnięta przez obserwację błędu między pożądanym a rzeczywistym kształtem impulsów mierzonych na wyjściu filtru w chwilach próbkowania i posłużenie się tym błędem do wyznaczania kierunków zmian w wagach odczepów. \cite{Haykin:1998:ST}
+Sygnał błędu zamyka pętlę sprzężenia zwrotnego.
+Adaptacja może zostać osiągnięta przez obserwację błędu między pożądanym a rzeczywistym kształtem impulsów mierzonych na wyjściu filtra w chwilach próbkowania i posłużenie się tym błędem do wyznaczania kierunków zmian w wagach odczepów. \cite{Haykin:1996:AFT:230061}
 
 \begin{figure}[ht]
 \centering
@@ -23,7 +23,7 @@ Wzór opisujący zmiany współczynników wag odczepów wyraża się w następuj
 \hat{w}_k(n+1) = \hat{w}_k(n) + \mu e_nx_{n-k}, \quad k= 0,1...,N
 \end{equation}
 Tutaj $\hat{w}_k(n+1)$ jest skorygowaną o $\mu e_nx_{n-k}$ wartością współczynnika $\hat{w}_k(n)$. 
-Niewielka stała dodatnie $\mu$ nazywana jest parametrem stopniowania. \cite{Haykin:1998:ST} 
+Niewielka stała dodatnie $\mu$ nazywana jest parametrem stopniowania. \cite{Haykin:1998:ST}
 
 Aby podkreślić zespoloną naturę algorytmu używa się notacji z rozbiciem na sygnały kwadraturowe:
 \begin{itemize}

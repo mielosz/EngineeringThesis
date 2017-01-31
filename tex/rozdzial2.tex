@@ -8,7 +8,7 @@ Głównym środowiskiem wspierającym radio USRP jest GnuRadio \cite{gnuradio}. 
 \paragraph*{Diagramy}
     Diagram nazywany jest również projektem i łączy się z wielu bloków funkcjonalnych.
     Zawiera przynajmniej jedno źródło i jedno ujście sygnału.
-    Tworzy łańcuch w którego ogniwach zachodzi przetwarzanie sygnału.
+    Tworzy łańcuch, w którego ogniwach zachodzi przetwarzanie sygnału.
     Nadzoruje poprawność połączeń i zarządza wykonywaniem programu.
 \paragraph*{Bloki}
     Mogą być źródłem sygnału (np. generator), ujściem (np. wyjście audio w~PC) lub elementem pośredniczącym (np. filtry) w procesie przetwarzania. 
@@ -28,7 +28,7 @@ W nomenklaturze środowiska GnuRadio takie przetwarzanie określa się jako sync
 Typem danych wejściowych jak i wyjściowych będą wartości zespolone próbek.
 Parametrami do ustawienia przez użytkownika w środowisku graficznym będą:
 \begin{enumerate}
- \item rząd $N$ filtru w postaci liczby całkowitej 
+ \item rząd $N$ filtra w postaci liczby całkowitej 
  \item długość kroku $\mu$ w postaci liczby zmiennoprzecinkowej
  \item liczba iteracji w postaci liczby całkowitej
  \item początkowe współczynniki filtra w postaci wektora liczb o długości N 
@@ -39,7 +39,7 @@ Parametry zostaną podzielone na wymagane (1, 2) i opcjonalne (3, 4)
 \paragraph{}
 Środowisko GnuRadio dostarcza szereg narzędzi wspomagających pracę w rozwijaniu własnych modułów tak, aby były kompatybilne z już istniejącymi. 
 Jednym z nich jest \texttt{gr\_modtool}, który został wykorzystany do stworzenia struktury plików bloku filtra adaptacyjnego. 
-Dzięki temu blok będzie w stanie łączyć się z innymi, przekazywać i odbierać sygnały oraz będzie rozumiał polecenia wydawane przez środowisko w~którym zostanie umieszczony. 
+Dzięki temu blok będzie w stanie łączyć się z innymi, przekazywać i odbierać sygnały oraz będzie rozumiał polecenia wydawane przez środowisko, w~którym zostanie umieszczony. 
 W projekt włącza się katalog z testami jednostkowymi, sprawdzającymi elementarne funkcjonalności bloku. 
 Dobrze zaimplementowane i przemyślane testy jednostkowe informują o wykrytych błędach powstających podczas tworzenia algorytmu.
 Oprócz testów w projekcie tworzy się plik \texttt{.xml}, który określa reprezentację bloku w środowisku graficznym \texttt{gnuradio-companion}. 
@@ -67,7 +67,7 @@ Serce modułu odpowiedzialnego za przetwarzanie wejściowych strumieni danych zn
 
 \paragraph{}
 Funkcja \texttt{work} uruchamiana cykliczne przez proces \texttt{scheduler} zawiera instrukcje odpowiedzialne za całe przetwarzanie wewnątrz bloku. 
-Jest miejscem w którym należy umieścić implementację filtra. 
+Jest miejscem, w którym należy umieścić implementację filtra. 
 Pobiera z wejścia nadchodzące elementy i na ich postawie oblicza produkty, które kieruje na wyjście.
 
 Należy zauważyć, że w niektórych przypadkach do obliczenia wartości próbki wyjściowej potrzeba więcej niż jedną próbkę wejściową. 
@@ -83,7 +83,7 @@ Parametry mogą być dostosowywane przez użytkownika na etapie projektowania (w
 Zmiana parametrów w biegu wiąże się z ponowną inicjalizacją bloku i może prowadzić do utraty danych przechowywanych wewnątrz tego obiektu. 
 W środowisku \texttt{gnuradio-companion} okno właściwości pojawia się po podwójnym kliknięciu na blok. 
 Zamiast stałej wartości parametru można przypisać referencję do jednego z~dostępnych elementów sterujących np. suwaka lub pokrętła. 
-Dzięki temu dostosowywanie bloku możliwe jest z poziomu graficznego panelu użytkownika (R).
+Dzięki temu dostosowywanie bloku możliwe jest z poziomu graficznego panelu użytkownika (Rysunek \ref{blockproperties}).
 
 \begin{figure}[t]
 \centering

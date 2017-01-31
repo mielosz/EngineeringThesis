@@ -2,7 +2,7 @@
 \section{Motywacja}
 Kiedy proces implementacji osiąga pewien stopień zaawansowania nadchodzi czas testowania. 
 Oznacza to sprawdzenie projektu pod kątem dostępnych funkcjonalności. 
-Prototyp poddany zostaje testom, aby upewnić się czy nie posiada poważnych wad. 
+Prototyp poddany zostaje testom, aby upewnić się, czy nie posiada poważnych wad. 
 Komercyjne ścieżki rozwoju produktu dopuszczają równoległy proces weryfikacji zarówno u producenta jak u klienta, aby lepiej dostosować się do jego potrzeb \cite{product_dev}. 
 System odbiornika tworzony jest dla celów edukacyjnych, dlatego testy zostaną wykonane wyłącznie przez autora projektu. 
 
@@ -31,16 +31,15 @@ Pozwoli to na przetestowanie odbiornika w warunkach zakłóceń związancych z p
 \end{figure}
 \section{Symulowanie zakłóceń}
 \subsection{Sygnał sinusoidalny}
-Źródłem zakłóceń w postaci sygnałów sinusoidalnych mogą być radary dużych mocy, których częstotliwości harmoniczne zachodzą na pasmo użyteczne innych systemów \cite{Haykin:2004:MWC:984217}.
-Głównym powodem testowania działania odbiornika dla tego rodzaju zakłóceń jest popularna aplikacja, w której algorytm LMS jest w stanie śledzić pulsację wolnozmiennego sygnału i adaptacyjnie dostosowywać nastawy filtra \cite{Haykin:1996:AFT:230061}.
+Źródłem zakłóceń w postaci sygnałów sinusoidalnych mogą być radary dużych mocy, których częstotliwości harmoniczne zachodzą na pasmo użyteczne innych systemów.~\cite{Haykin:2004:MWC:984217}
+Głównym powodem testowania działania odbiornika dla tego rodzaju zakłóceń jest popularna aplikacja, w której algorytm LMS jest w stanie śledzić pulsację wolnozmiennego sygnału i adaptacyjnie dostosowywać nastawy filtra. \cite{Haykin:1996:AFT:230061}
 Źródłem sygnału będzie blok \texttt{Signal Source}, który jako parametr przyjmuję amplitudę i~częstotliwość fali. 
 
 \subsection{Zjawisko wielodrogowości}
 Występuje wtedy, gdy sygnał z nadajnika, odbity od elementów otoczenia, dociera do odbiornika więcej niż jedną drogą. 
-Czas propagacji jest różny dla różnych dróg sygnału. 
-Tym samym każdy sygnał dociera do odbiornika opóźniony lub przyspieszony. 
+Między sygnałami na odbiorniku występuje opóźnienie zależne od długości toru propagacji.
 Fale interferują, wzmacniają się lub osłabiają. 
-W określonym czasie przy zachowaniu rozmieszczenia elementów otoczenia, nadajnika i odbiornika, kanał radiowy można traktować jako filtr o odpowiedzi impulsowej $h(t)$ \cite{Haykin:2004:MWC:984217}. 
+W określonym czasie przy zachowaniu rozmieszczenia elementów otoczenia, nadajnika i odbiornika, kanał radiowy można traktować jako filtr o odpowiedzi impulsowej $h(t)$. \cite{Haykin:2004:MWC:984217} 
 
 Jako model kanału z propagacją wielodrogową posłuży blok \texttt{Channel Model}. 
 Istotnym argumentem wejściowym dla bloku jest wektor współczynników o długości $M$. 
